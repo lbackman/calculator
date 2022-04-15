@@ -43,6 +43,18 @@ body {
     background-color: coral;
 }
 
+#make {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 2px;
+    background-image: linear-gradient(rgb(233, 231, 227) 28%, 
+		rgb(213, 200, 200) 40%,
+		rgb(245, 242, 233) 54%);
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    user-select: none;
+}
+
 .display {
     display: flex;
     flex-direction: column;
@@ -54,6 +66,7 @@ body {
     text-align: end;
     padding: 5px;
     position: relative;
+    box-shadow: 0 -1px 0 gray;
 }
 #calculator .display {
     background-color: #fff;
@@ -76,6 +89,8 @@ button {
     background-color: aliceblue;
     border-radius: 3px;
     border: 1px solid rgb(208, 212, 216);
+    user-select: none;
+    box-shadow: -1px 1px 0 gray;
 }
 
 button:hover {
