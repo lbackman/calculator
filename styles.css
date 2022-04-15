@@ -64,7 +64,7 @@ body {
     text-align: end;
     padding: 5px;
     position: relative;
-    box-shadow: 0 -1px 0 gray;
+    box-shadow: 0 1px 0 gray inset;
 }
 #calculator .display {
     background-color: #fff;
