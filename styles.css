@@ -4,6 +4,7 @@
 html, body {
 	background: #fff;
 	color: #000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 	
 body {
@@ -22,7 +23,7 @@ body {
     justify-content: center;
     align-items: center;
     display: flex;
-    width: 65%;
+    width: 60%;
     height: 65vh;
     margin-bottom: 150px;
     /* border: 1px solid black; */
@@ -32,6 +33,8 @@ body {
 #calculator {
     width: inherit;
     height: inherit;
+    min-width: 300px;
+    min-height: 400px;
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
@@ -48,6 +51,9 @@ body {
     border: 1px solid black;
     flex: 3;
     margin-bottom: 5px;
+    text-align: end;
+    padding: 5px;
+    position: relative;
 }
 #calculator .display {
     background-color: #fff;
@@ -55,6 +61,10 @@ body {
 
 #primary {
     flex: 3;
+    font-size: 42px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
 }
 
 #secondary {
@@ -62,7 +72,7 @@ body {
 }
 
 button {
-    font-size: 20px;
+    font-size: 18px;
     background-color: aliceblue;
     border-radius: 3px;
     border: 1px solid rgb(208, 212, 216);
@@ -76,7 +86,9 @@ button:active {
     background-color: rgb(101, 132, 162);
 }
 
-.mem {
+.mem,
+.mem:disabled:hover,
+.mem:disabled:active {
     font-size: 12px;
     background-color: #fff;
 }
