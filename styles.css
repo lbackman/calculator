@@ -106,6 +106,10 @@ button:active {
     background-color: rgb(172, 209, 242);
 }
 
+.operator {
+    font-size: 24px;
+}
+
 .number:hover {
     background-color: rgb(140, 180, 215);
 }
