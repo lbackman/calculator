@@ -1,0 +1,144 @@
+* { 
+	box-sizing: border-box;
+}
+html, body {
+	background: #fff;
+	color: #000;
+}
+	
+body {
+	/* font-size: 1.4rem; */
+	text-rendering: optimizeLegibility;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-bottom: 0;
+    background-color: darkslateblue;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 65%;
+    height: 65vh;
+    margin-bottom: 150px;
+    /* border: 1px solid black; */
+    /* border-radius: 10px; */
+}
+
+#calculator {
+    width: inherit;
+    height: inherit;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: coral;
+}
+
+.display {
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    border-radius: 5px;
+    border: 1px solid black;
+    flex: 3;
+    margin-bottom: 5px;
+}
+#calculator .display {
+    background-color: #fff;
+}
+
+#primary {
+    flex: 3;
+}
+
+#secondary {
+    flex: 1;
+}
+
+button {
+    font-size: 20px;
+    background-color: aliceblue;
+    border-radius: 3px;
+    border: 1px solid rgb(208, 212, 216);
+}
+
+button:hover {
+    background-color: rgb(213, 225, 237);
+}
+
+button:active {
+    background-color: rgb(101, 132, 162);
+}
+
+.mem {
+    font-size: 12px;
+    background-color: #fff;
+}
+
+.mem:hover {
+    background-color: rgb(236, 242, 247);
+}
+
+.mem:active {
+    background-color: rgb(119, 149, 180); 
+}
+
+.number {
+    font-size: 24px;
+    background-color: rgb(172, 209, 242);
+}
+
+.number:hover {
+    background-color: rgb(140, 180, 215);
+}
+
+.number:active {
+    background-color: rgb(64, 98, 129);
+    color: #fff;
+}
+
+.row {
+    display: flex;
+    
+}
+.row .calc {
+    flex: 1;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+.row > :first-child {
+    margin-left: 0 !important;
+}
+
+.buttons {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    flex: 7;
+}
+
+.buttons .row {
+    flex: 1;
+}
+
+
+.buttons .memory {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 3px;
+}
+
+.buttons .memory .mem {
+    flex: 1;
+    margin-left: 2px;
+}
+
+.buttons .memory > :first-child {
+    margin-left: 0 !important;
+}
