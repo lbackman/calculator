@@ -3,6 +3,7 @@ let num2;
 let tempNum;
 let currentOp;
 let repeatOp;
+let calcDone = false;
 const operation = {};
 operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 operation.subtract = (num1, num2) => (num1 - num2);
@@ -68,17 +69,20 @@ equal.addEventListener('click', function() {
         num2 = null;
         repeatOp = currentOp;
         currentOp = null;
+        calcDone = true;
     } else if (repeatOp) {
         num2 = tempNum;
         primaryDisplay.textContent = repeatOp(num1, num2);
         num1 = primaryDisplay.textContent;
         tempNum = num2;
         num2 = null;
+        calcDone = true;
     } else {
         return;
     }
 });
-
+/* After an operation is done and you start entering *numbers*
+again, num1 and num2 should be reset */
 numButtons.forEach(button => {
     button.addEventListener('click', addToDisplay);
 });
@@ -107,9 +111,16 @@ function addToDisplay(e) {
         primaryDisplay.textContent += input;
     } else if (display === '0') {
         primaryDisplay.textContent = input;
-    } else if (num1 && !num2) {
+    } else if (!calcDone && num1 && !num2) {
         primaryDisplay.textContent = input;
+    } else if (calcDone && num1 && !num2) {
+        console.log('true');
+        repeatOp = null;
+        primaryDisplay.textContent = input;
+        num1 = null;
+        calcDone = false;
     } else {
+        console.log('else');
         primaryDisplay.textContent += input;
     }
     num2 = primaryDisplay.textContent;
