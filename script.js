@@ -1,15 +1,18 @@
 let num1;
 let num2;
+let tempNum;
 let currentOp;
-const add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
-const subtract = (num1, num2) => (num1 - num2);
-const multiply = (num1, num2) => (num1 * num2);
-const divide = (num1, num2) => (num2 === 0) ? 
+let repeatOp;
+const operation = {};
+operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
+operation.subtract = (num1, num2) => (num1 - num2);
+operation.multiply = (num1, num2) => (num1 * num2);
+operation.divide = (num1, num2) => (num2 === 0) ? 
     null : (num1 / num2);
 
-const square = (num) => (num * num);
-const sqrt = (num) => (Math.sqrt(num));
-const reciprocal = (num) => (1 / num);
+operation.square = (num) => (num * num);
+operation.sqrt = (num) => (Math.sqrt(num));
+operation.reciprocal = (num) => (1 / num);
 
 
 // Percentage functions
@@ -30,49 +33,58 @@ const numButtons = document.querySelectorAll('.number');
 const decimal = document.getElementById('decimal');
 const backSpace = document.getElementById('backspace');
 
-// const pmmde = document.querySelectorAll('.calc.operator');
-// pmmde.forEach(button => {
-//     button.addEventListener('click', function(e) {
-//         const operator = e.target.id;
-//         if (currentOp && num1 && num2) {
-//             operate(currentOp, ...nums);
-//             currentOp = add;
-//         } 
-//         switch (operator) {
-//             case ('add'):
-//                 currentOp = add;
-//                 break;
-//             case ('subtract'):
-//                 currentOp = subtract;
-//                 break;
-//         }
-//     });
-// });
-const plus = document.getElementById('add');
-plus.addEventListener('click', function() {
+/* 
+Uses object so a string can be passed as a function, in this
+case, e.target.id, which is add, subtract, multiply or divide.
+*/
+const pmmd = document.querySelectorAll('.calc.operator');
+pmmd.forEach(button => {
+    button.addEventListener('click', function(e) {
+        if (num1 && num2) {
+            primaryDisplay.textContent = currentOp(num1, num2);
+            num1 = primaryDisplay.textContent;
+            tempNum = num2;
+            num2 = null;
+            repeatOp = currentOp;
+            currentOp = operation[e.target.id];
+        } else if (!num1 && num2) {
+            num1 = num2;
+            num2 = null;
+            currentOp = operation[e.target.id];
+        } else if (num1 && !num2) {
+            currentOp = operation[e.target.id]
+        } else {
+            return;
+        }
+    });
+});
+
+const equal = document.getElementById('equal');
+equal.addEventListener('click', function() {
     if (num1 && num2) {
-        primaryDisplay.textContent = operate(add, num1, num2);
+        primaryDisplay.textContent = currentOp(num1, num2);
         num1 = primaryDisplay.textContent;
+        tempNum = num2;
         num2 = null;
-    } else if (!num1 && num2) {
-        num1 = num2;
+        repeatOp = currentOp;
+        currentOp = null;
+    } else if (repeatOp) {
+        num2 = tempNum;
+        primaryDisplay.textContent = repeatOp(num1, num2);
+        num1 = primaryDisplay.textContent;
+        tempNum = num2;
         num2 = null;
-        currentOp = add;
     } else {
         return;
     }
 });
-// const minus = document.getElementById('subtract');
-// const times = document.getElementById('multiply');
-// const divided = document.getElementById('divide');
-// const equals = document.getElementById('equal');
 
 numButtons.forEach(button => {
     button.addEventListener('click', addToDisplay);
 });
 
 decimal.addEventListener('click', addToDisplay);
-
+/* Add eventuality for backspacing on calculation output */
 backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
