@@ -81,8 +81,7 @@ equal.addEventListener('click', function() {
         return;
     }
 });
-/* After an operation is done and you start entering *numbers*
-again, num1 and num2 should be reset */
+
 numButtons.forEach(button => {
     button.addEventListener('click', addToDisplay);
 });
@@ -114,13 +113,11 @@ function addToDisplay(e) {
     } else if (!calcDone && num1 && !num2) {
         primaryDisplay.textContent = input;
     } else if (calcDone && num1 && !num2) {
-        console.log('true');
         repeatOp = null;
         primaryDisplay.textContent = input;
         num1 = null;
         calcDone = false;
     } else {
-        console.log('else');
         primaryDisplay.textContent += input;
     }
     num2 = primaryDisplay.textContent;
