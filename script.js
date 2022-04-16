@@ -1,7 +1,7 @@
 let num1;
 let num2;
 let currentOp;
-const add = (num1, num2) => (parseInt(num1) + parseInt(num2));
+const add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 const subtract = (num1, num2) => (num1 - num2);
 const multiply = (num1, num2) => (num1 * num2);
 const divide = (num1, num2) => (num2 === 0) ? 
