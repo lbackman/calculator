@@ -32,6 +32,7 @@ body {
     height: inherit;
     min-width: 300px;
     min-height: 400px;
+    max-width: 500px;
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
@@ -72,7 +73,7 @@ body {
 
 #primary {
     flex: 3;
-    font-size: 42px;
+    font-size: clamp(2rem, -0.25rem + 4.17vw, 3.45rem);
     position: absolute;
     bottom: 5px;
     right: 5px;
