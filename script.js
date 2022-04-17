@@ -122,3 +122,15 @@ function addToDisplay(e) {
     }
     num2 = primaryDisplay.textContent;
 }
+
+// A function to display exponential numbers without overflowing
+// The same logic can be used on regular numbers
+
+function expo(x) {
+    const num = Number.parseFloat(x).toExponential();
+    if (num.toString().length > 15) {
+        return Number.parseFloat(x).toExponential(9);
+    } else {
+        return num;
+    }
+}
