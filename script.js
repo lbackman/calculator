@@ -8,8 +8,8 @@ const operation = {};
 operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 operation.subtract = (num1, num2) => (num1 - num2);
 operation.multiply = (num1, num2) => (num1 * num2);
-operation.divide = (num1, num2) => (num2 === 0) ? 
-    null : (num1 / num2);
+operation.divide = (num1, num2) => (num2 == 0) ? 
+    "You fool!" : (num1 / num2);
 
 operation.square = (num) => (num * num);
 operation.sqrt = (num) => (Math.sqrt(num));
