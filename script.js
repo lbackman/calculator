@@ -51,7 +51,7 @@ pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
         if (num1 && num2) {
             num1 = currentOp(num1, num2);
-           primaryDisplay.textContent = num1;
+            primaryDisplay.textContent = round(num1);
             tempNum = num2;
             num2 = null;
             repeatOp = currentOp;
@@ -85,7 +85,7 @@ equal.addEventListener('click', function() {
         pmmd.forEach(el => el.classList.remove('selected'));
         tempNum = num2;
         num2 = currentOp(num1, num2);
-        primaryDisplay.textContent= num2;
+        primaryDisplay.textContent= round(num2);
         // tempNum = num2;
         num1 = null;
         repeatOp = currentOp;
@@ -98,7 +98,7 @@ equal.addEventListener('click', function() {
         num1 = num2;
         num2 = tempNum;
         num2 = repeatOp(num1, num2);
-        primaryDisplay.textContent = num2;
+        primaryDisplay.textContent = round(num2);
         num1 = null;
         calcDone = true;
     } else {
@@ -143,7 +143,15 @@ function addToDisplay(e) {
         }
     }
     else if (display.length >= 15) {
-        return;
+        if (num1 && !num2) {
+            if (input == '.') {
+                primaryDisplay.textContent ='0.';
+            } else {
+                primaryDisplay.textContent = input;
+            }
+        } else {
+            return;
+        }
     } else if (input == '.' && display.includes('.')) {
         if (num1 && !num2) {
             primaryDisplay.textContent = '0.';
@@ -189,7 +197,8 @@ function round(answer) {
     // if (num.toString().length > 15) {
 
     // }
-    return num.toPrecision(15);
+    const rounded = (Math.round(num*1e13))/1e13;
+    return rounded.toString();
 }
 
 function expo(x) {
