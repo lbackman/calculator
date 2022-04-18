@@ -15,8 +15,8 @@ operation.divide = (num1, num2) => (num2 == 0) ?
     "uh oh" : (num1 / num2);
 
 operation.square = (num) => (num * num);
-operation.sqrt = (num) => (Math.sqrt(num));
-operation.reciprocal = (num) => (1 / num);
+operation.sqrt = (num) => num >= 0 ? (Math.sqrt(num)) : 'uh oh';
+operation.reciprocal = (num) => num == 0 ? 'uh oh' : (1 / num);
 
 const cButton = document.getElementById('c');
 cButton.addEventListener('click', clear);
@@ -29,9 +29,11 @@ ceButton.addEventListener('click', clearLast);
 // Returns the 2nd number's percentage of the first
 // E.g. percentAdd(10, 20) = 20% of 10 = 2
 // This value will be stored in the second operand
-const percentAdd = (num1, num2) => {
+const percentAddSub = (num1, num2) => {
     return (num1 * num2) / 100;
 }
+
+const regularPercent = (num) => num / 100;
 // operate takes 1 or 2 numbers as arguments
 const operate = (op, num1, num2) => op(num1, num2);
 
@@ -41,6 +43,11 @@ const secondaryDisplay = document.getElementById('secondary');
 const numButtons = document.querySelectorAll('.number');
 const decimal = document.getElementById('decimal');
 const backSpace = document.getElementById('backspace');
+const plusMinus = document.getElementById('plus-minus');
+const reciprocal = document.getElementById('reciprocal');
+const square = document.getElementById('square');
+const sqrt = document.getElementById('sqrt');
+const percentBtn = document.getElementById('percent');
 
 /* 
 Uses object so a string can be passed as a function, in this
@@ -111,6 +118,66 @@ numButtons.forEach(button => {
 });
 
 decimal.addEventListener('click', addToDisplay);
+
+plusMinus.addEventListener('click', negate);
+
+function negate() {
+    if (num2) { 
+        num2 = -num2;
+        primaryDisplay.textContent = round(num2);
+    }
+}
+
+reciprocal.addEventListener('click', invert);
+
+function invert() {
+    if (num2) {
+        num2 = operation.reciprocal(num2);
+        primaryDisplay.textContent = round(num2);
+    }
+}
+square.addEventListener('click', toSquare);
+
+function toSquare() {
+    if (num2) {
+        num2 = operation.square(num2);
+        primaryDisplay.textContent = round(num2);
+    }
+}
+
+sqrt.addEventListener('click', toSqrt);
+
+function toSqrt() {
+    if (num2) {
+        num2 = operation.sqrt(num2);
+        primaryDisplay.textContent = round(num2);
+    }
+}
+
+percentBtn.addEventListener('click', calcPercent);
+
+function calcPercent() {
+    const ADD = operation.add;
+    const SUB = operation.subtract;
+    const MULT = operation.multiply;
+    const DIV = operation.divide;
+    if (num2) {
+        if (num1 && (currentOp == ADD || currentOp == SUB)) {
+            num2 = percentAddSub(num1, num2)
+        } else {
+            num2 = regularPercent(num2);
+        }
+        primaryDisplay.textContent = round(num2);
+    } else {
+        if (num1 && (currentOp == ADD || currentOp == SUB)) {
+            num2 = percentAddSub(num1, num1);
+            primaryDisplay.textContent = round(num2);
+        } else if (num1 && (currentOp == MULT || currentOp == DIV)) {
+            num2 = regularPercent(num1);
+            primaryDisplay.textContent = round(num2);
+        }
+    }
+}
 
 // Add eventuality for backspacing on calculation output
 // Suggestion: later when defining C and CE buttons,
