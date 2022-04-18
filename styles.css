@@ -96,6 +96,7 @@ button:hover {
     background-color: rgb(213, 225, 237);
 }
 
+.operator.selected,
 button:active {
     background-color: rgb(101, 132, 162);
 }

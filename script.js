@@ -48,12 +48,18 @@ pmmd.forEach(button => {
             num2 = null;
             repeatOp = currentOp;
             currentOp = operation[e.target.id];
+            pmmd.forEach(el => el.classList.remove('selected'));
+            e.target.classList.add('selected');
         } else if (!num1 && num2) {
             num1 = num2;
             num2 = null;
             currentOp = operation[e.target.id];
+            pmmd.forEach(el => el.classList.remove('selected'));
+            e.target.classList.add('selected');
         } else if (num1 && !num2) {
             currentOp = operation[e.target.id]
+            pmmd.forEach(el => el.classList.remove('selected'));
+            e.target.classList.add('selected');
         } else {
             return;
         }
@@ -63,6 +69,7 @@ pmmd.forEach(button => {
 const equal = document.getElementById('equal');
 equal.addEventListener('click', function() {
     if (num1 && num2) {
+        pmmd.forEach(el => el.classList.remove('selected'));
         primaryDisplay.textContent = currentOp(num1, num2);
         num1 = primaryDisplay.textContent;
         tempNum = num2;
@@ -87,7 +94,9 @@ numButtons.forEach(button => {
 });
 
 decimal.addEventListener('click', addToDisplay);
-/* Add eventuality for backspacing on calculation output */
+// Add eventuality for backspacing on calculation output
+// Suggestion: later when defining C and CE buttons,
+// use the function of one on those.
 backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
