@@ -111,6 +111,7 @@ numButtons.forEach(button => {
 });
 
 decimal.addEventListener('click', addToDisplay);
+
 // Add eventuality for backspacing on calculation output
 // Suggestion: later when defining C and CE buttons,
 // use the function of one of those.
@@ -121,6 +122,8 @@ backSpace.addEventListener('click', function() {
     } else if (primaryDisplay.textContent == 'NaN' ||
         primaryDisplay.textContent == 'uh oh') {
         primaryDisplay.textContent = '0';
+        currentOp = null;
+        pmmd.forEach(el => el.classList.remove('selected'));
     } 
     else {
         const newStr = num.slice(0, -1);
@@ -189,16 +192,8 @@ function addToDisplay(e) {
     ceClicked = false;
 }
 
-// A function to display exponential numbers without overflowing
-// The same logic can be used on regular numbers
-
 function round(answer) {
-    // const str = answer.toString();
-    // if (str.charAt(14) == '.') {
-    //     return str.slice(0, 14);
-    // } else {
-    //     return str.slice(0,15);
-    // }
+    if (answer == 'uh oh') return answer;
     const num = parseFloat(answer);
     let roundedNumber;
     if (num.toString().length > 15) {
@@ -225,7 +220,7 @@ function round(answer) {
                     console.log('0.0000...');
                     roundedNumber = num.toFixed(13);
                 }
-                
+            // If the number is below 0 and above -1
             } else if (Math.floor(num) == -1) {
                 if (Math.abs(num) < 1e-12) {
                     roundedNumber = num.toExponential(8);
@@ -251,15 +246,6 @@ function round(answer) {
         roundedNumber = num;
     }
     return roundedNumber.toString();
-}
-
-function expo(x) {
-    const num = Number.parseFloat(x).toExponential();
-    if (num.toString().length > 15) {
-        return Number.parseFloat(x).toExponential(9);
-    } else {
-        return num;
-    }
 }
 
 function clear() {
