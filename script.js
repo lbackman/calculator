@@ -193,12 +193,64 @@ function addToDisplay(e) {
 // The same logic can be used on regular numbers
 
 function round(answer) {
-    const num = Number.parseFloat(answer);
-    // if (num.toString().length > 15) {
-
+    // const str = answer.toString();
+    // if (str.charAt(14) == '.') {
+    //     return str.slice(0, 14);
+    // } else {
+    //     return str.slice(0,15);
     // }
-    const rounded = (Math.round(num*1e13))/1e13;
-    return rounded.toString();
+    const num = parseFloat(answer);
+    let roundedNumber;
+    if (num.toString().length > 15) {
+        const intValue = Math.floor(num).toString().length
+        if (intValue >= 15) {
+            if (num < 0) {
+                console.log('exp-minus');
+                roundedNumber = num.toExponential(8);
+            } else {
+                console.log('exp-plus');
+                roundedNumber = num.toExponential(9);
+            }
+            
+        }
+        else if (intValue == 14) {
+            console.log('x=14');
+            roundedNumber = Math.floor(num);
+
+        } else {
+            if (Math.floor(num) == 0) {
+                if (Math.abs(num < 1e-12)) {
+                    roundedNumber = num.toExponential(9);
+                } else {
+                    console.log('0.0000...');
+                    roundedNumber = num.toFixed(13);
+                }
+                
+            } else if (Math.floor(num) == -1) {
+                if (Math.abs(num) < 1e-12) {
+                    roundedNumber = num.toExponential(8);
+                } else {
+                    console.log('-0.0000...');
+                    roundedNumber = num.toFixed(12);
+                }
+            }
+             else {
+                for (let i = 1; i < 14; i++) {
+                    if (i == intValue) {
+                        console.log('1<x<14');
+                        console.log(i);
+                        roundedNumber = num.toFixed(14-i);
+                    }
+                }
+            }
+            
+        } 
+
+    } else {
+        console.log('y');
+        roundedNumber = num;
+    }
+    return roundedNumber.toString();
 }
 
 function expo(x) {
