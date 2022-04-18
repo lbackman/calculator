@@ -12,7 +12,7 @@ operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 operation.subtract = (num1, num2) => (num1 - num2);
 operation.multiply = (num1, num2) => (num1 * num2);
 operation.divide = (num1, num2) => (num2 == 0) ? 
-    "You fool!" : (num1 / num2);
+    "uh oh" : (num1 / num2);
 
 operation.square = (num) => (num * num);
 operation.sqrt = (num) => (Math.sqrt(num));
@@ -68,7 +68,12 @@ pmmd.forEach(button => {
             currentOp = operation[e.target.id]
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
-        } else {
+        } else if (!num1 && !num2) {
+            pmmd.forEach(el => el.classList.remove('selected'));
+            currentOp = null;
+            num1 = null;
+        }  
+        else {
             return;
         }
     });
@@ -113,7 +118,11 @@ backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
         primaryDisplay.textContent = '0';
-    } else {
+    } else if (primaryDisplay.textContent == 'NaN' ||
+        primaryDisplay.textContent == 'uh oh') {
+        primaryDisplay.textContent = '0';
+    } 
+    else {
         const newStr = num.slice(0, -1);
         primaryDisplay.textContent = newStr;
     }
@@ -123,7 +132,17 @@ backSpace.addEventListener('click', function() {
 function addToDisplay(e) {
     const input = e.target.textContent;
     let display = primaryDisplay.textContent;
-    if (display.length >= 15) {
+    if (display =='NaN' || display == 'uh oh') {
+        repeatOp = null;
+        calcDone = false;
+        if (input == '.'){
+            primaryDisplay.textContent = '0.';
+        } 
+        else {
+            primaryDisplay.textContent = input;
+        }
+    }
+    else if (display.length >= 15) {
         return;
     } else if (input == '.' && display.includes('.')) {
         return;
@@ -132,13 +151,25 @@ function addToDisplay(e) {
     } else if (display === '0') {
         primaryDisplay.textContent = input;
     } else if (num1 && !num2) {
-        primaryDisplay.textContent = input;
+        if (input == '.') {
+            primaryDisplay.textContent = '0.';
+        }
+        else {
+            primaryDisplay.textContent = input;
+        }
     } else if (calcDone && !num1 && num2) {
         repeatOp = null;
         primaryDisplay.textContent = input;
         num1 = null;
         calcDone = false;
-    } else {
+        console.log('yes');
+    } else if (!num1 && !num2) {
+        pmmd.forEach(el => el.classList.remove('selected'));
+        currentOp = null;
+        num1 = null;
+        primaryDisplay.textContent = input;
+    }
+    else {
         primaryDisplay.textContent += input;
     }
     num2 = primaryDisplay.textContent;
