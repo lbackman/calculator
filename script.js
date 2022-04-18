@@ -186,15 +186,21 @@ backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
         primaryDisplay.textContent = '0';
-    } else if (primaryDisplay.textContent == 'NaN' ||
-        primaryDisplay.textContent == 'uh oh') {
+    } else if (
+        num == 'NaN' ||
+        num == 'uh oh' ||
+        num.includes('e')) {
         primaryDisplay.textContent = '0';
         currentOp = null;
         pmmd.forEach(el => el.classList.remove('selected'));
     } 
     else {
         const newStr = num.slice(0, -1);
-        primaryDisplay.textContent = newStr;
+        if (newStr.charAt(newStr.length - 1) == '.') {
+            primaryDisplay.textContent = newStr.slice(0, -1);
+        } else {
+            primaryDisplay.textContent = newStr;
+        }
     }
     num2 = primaryDisplay.textContent;
 });
