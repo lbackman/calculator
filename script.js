@@ -6,6 +6,7 @@ let currentOp;
 let repeatOp;
 let calcDone = false;
 let cClicked = false;
+let ceClicked = false;
 const operation = {};
 operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 operation.subtract = (num1, num2) => (num1 - num2);
@@ -19,6 +20,9 @@ operation.reciprocal = (num) => (1 / num);
 
 const cButton = document.getElementById('c');
 cButton.addEventListener('click', clear);
+
+const ceButton = document.getElementById('ce');
+ceButton.addEventListener('click', clearLast);
 
 // Percentage functions
 
@@ -138,6 +142,8 @@ function addToDisplay(e) {
         primaryDisplay.textContent += input;
     }
     num2 = primaryDisplay.textContent;
+    cClicked = false;
+    ceClicked = false;
 }
 
 // A function to display exponential numbers without overflowing
@@ -164,5 +170,30 @@ function clear() {
     currentOp = null;
     repeatOp = null;
     calcDone = false;
+    pmmd.forEach(el => el.classList.remove('selected'));
     primaryDisplay.textContent = '0';
+}
+
+function clearLast () {
+    if (ceClicked) {
+        clear();
+        ceClicked = false;
+        cClicked = true;
+    } else {
+        if (num1 && num2) {
+            num2 = null;
+            primaryDisplay.textContent = '0';
+            ceClicked = true;
+        } else if (num1 && currentOp && !num2) {
+            currentOp = null;
+            pmmd.forEach(el => el.classList.remove('selected'));
+            num2 = num1;
+            num1 = null;
+            ceClicked = true;
+        } else {
+            clear();
+            ceClicked = false;
+            cClicked = true;
+        }
+    }
 }
