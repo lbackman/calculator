@@ -1,9 +1,11 @@
 let num1;
 let num2;
 let tempNum;
+let memory;
 let currentOp;
 let repeatOp;
 let calcDone = false;
+let cClicked = false;
 const operation = {};
 operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
 operation.subtract = (num1, num2) => (num1 - num2);
@@ -15,6 +17,8 @@ operation.square = (num) => (num * num);
 operation.sqrt = (num) => (Math.sqrt(num));
 operation.reciprocal = (num) => (1 / num);
 
+const cButton = document.getElementById('c');
+cButton.addEventListener('click', clear);
 
 // Percentage functions
 
@@ -100,7 +104,7 @@ numButtons.forEach(button => {
 decimal.addEventListener('click', addToDisplay);
 // Add eventuality for backspacing on calculation output
 // Suggestion: later when defining C and CE buttons,
-// use the function of one on those.
+// use the function of one of those.
 backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
@@ -146,4 +150,19 @@ function expo(x) {
     } else {
         return num;
     }
+}
+
+function clear() {
+    if (cClicked) {
+        memory = null;
+        cClicked = false;
+    }
+    if (memory) cClicked = true;
+    num1 = null;
+    num2 = null;
+    tempNum = null;
+    currentOp = null;
+    repeatOp = null;
+    calcDone = false;
+    primaryDisplay.textContent = '0';
 }
