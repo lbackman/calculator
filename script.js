@@ -145,7 +145,11 @@ function addToDisplay(e) {
     else if (display.length >= 15) {
         return;
     } else if (input == '.' && display.includes('.')) {
-        return;
+        if (num1 && !num2) {
+            primaryDisplay.textContent = '0.';
+        } else {
+            return;
+        }
     } else if (input == '.' && display == 0) {
         primaryDisplay.textContent += input;
     } else if (display === '0') {
@@ -179,6 +183,14 @@ function addToDisplay(e) {
 
 // A function to display exponential numbers without overflowing
 // The same logic can be used on regular numbers
+
+function round(answer) {
+    const num = Number.parseFloat(answer);
+    // if (num.toString().length > 15) {
+
+    // }
+    return num.toPrecision(15);
+}
 
 function expo(x) {
     const num = Number.parseFloat(x).toExponential();
