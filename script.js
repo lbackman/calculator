@@ -42,8 +42,8 @@ const pmmd = document.querySelectorAll('.calc.operator');
 pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
         if (num1 && num2) {
-            primaryDisplay.textContent = currentOp(num1, num2);
-            num1 = primaryDisplay.textContent;
+            num1 = currentOp(num1, num2);
+           primaryDisplay.textContent = num1;
             tempNum = num2;
             num2 = null;
             repeatOp = currentOp;
@@ -70,19 +70,23 @@ const equal = document.getElementById('equal');
 equal.addEventListener('click', function() {
     if (num1 && num2) {
         pmmd.forEach(el => el.classList.remove('selected'));
-        primaryDisplay.textContent = currentOp(num1, num2);
-        num1 = primaryDisplay.textContent;
         tempNum = num2;
-        num2 = null;
+        num2 = currentOp(num1, num2);
+        primaryDisplay.textContent= num2;
+        // tempNum = num2;
+        num1 = null;
         repeatOp = currentOp;
         currentOp = null;
         calcDone = true;
+        // console.log('num1: ' + num1);
+        // console.log('num2: ' + num2);
+        // console.log('op: ' + currentOp);
     } else if (repeatOp) {
+        num1 = num2;
         num2 = tempNum;
-        primaryDisplay.textContent = repeatOp(num1, num2);
-        num1 = primaryDisplay.textContent;
-        tempNum = num2;
-        num2 = null;
+        num2 = repeatOp(num1, num2);
+        primaryDisplay.textContent = num2;
+        num1 = null;
         calcDone = true;
     } else {
         return;
@@ -104,8 +108,8 @@ backSpace.addEventListener('click', function() {
     } else {
         const newStr = num.slice(0, -1);
         primaryDisplay.textContent = newStr;
-        num2 = primaryDisplay.textContent;
     }
+    num2 = primaryDisplay.textContent;
 });
 
 function addToDisplay(e) {
@@ -119,9 +123,9 @@ function addToDisplay(e) {
         primaryDisplay.textContent += input;
     } else if (display === '0') {
         primaryDisplay.textContent = input;
-    } else if (!calcDone && num1 && !num2) {
+    } else if (num1 && !num2) {
         primaryDisplay.textContent = input;
-    } else if (calcDone && num1 && !num2) {
+    } else if (calcDone && !num1 && num2) {
         repeatOp = null;
         primaryDisplay.textContent = input;
         num1 = null;
