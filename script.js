@@ -8,7 +8,7 @@ let calcDone = false;
 let cClicked = false;
 let ceClicked = false;
 const operation = {};
-operation.add = (num1, num2) => (parseFloat(num1) + parseFloat(num2));
+operation.add = (num1, num2) => ((+num1) + (+num2));
 operation.subtract = (num1, num2) => (num1 - num2);
 operation.multiply = (num1, num2) => (num1 * num2);
 operation.divide = (num1, num2) => (num2 == 0) ? 
@@ -17,6 +17,10 @@ operation.divide = (num1, num2) => (num2 == 0) ?
 operation.square = (num) => (num * num);
 operation.sqrt = (num) => num >= 0 ? (Math.sqrt(num)) : 'uh oh';
 operation.reciprocal = (num) => num == 0 ? 'uh oh' : (1 / num);
+
+operation.percent = {};
+operation.percent.addSub = (num1, num2) => (num1 * num2) / 100;
+operation.percent.regular = (num) => num / 100;
 
 const cButton = document.getElementById('c');
 cButton.addEventListener('click', clear);
@@ -29,13 +33,13 @@ ceButton.addEventListener('click', clearLast);
 // Returns the 2nd number's percentage of the first
 // E.g. percentAdd(10, 20) = 20% of 10 = 2
 // This value will be stored in the second operand
-const percentAddSub = (num1, num2) => {
-    return (num1 * num2) / 100;
-}
+// const percentAddSub = (num1, num2) => {
+//     return (num1 * num2) / 100;
+// }
 
-const regularPercent = (num) => num / 100;
+// const regularPercent = (num) => num / 100;
 // operate takes 1 or 2 numbers as arguments
-const operate = (op, num1, num2) => op(num1, num2);
+// const operate = (op, num1, num2) => op(num1, num2);
 
 const primaryDisplay = document.getElementById('primary');
 const secondaryDisplay = document.getElementById('secondary');
@@ -76,9 +80,9 @@ pmmd.forEach(button => {
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
         } else if (!num1 && !num2) {
-            pmmd.forEach(el => el.classList.remove('selected'));
-            currentOp = null;
-            num1 = null;
+            currentOp = operation[e.target.id];
+            e.target.classList.add('selected');
+            num1 = '0';
         }  
         else {
             return;
@@ -163,17 +167,17 @@ function calcPercent() {
     const DIV = operation.divide;
     if (num2) {
         if (num1 && (currentOp == ADD || currentOp == SUB)) {
-            num2 = percentAddSub(num1, num2)
+            num2 = operation.percent.addSub(num1, num2)
         } else {
-            num2 = regularPercent(num2);
+            num2 = operation.percent.regular(num2);
         }
         primaryDisplay.textContent = round(num2);
     } else {
         if (num1 && (currentOp == ADD || currentOp == SUB)) {
-            num2 = percentAddSub(num1, num1);
+            num2 = operation.percent.addSub(num1, num1);
             primaryDisplay.textContent = round(num2);
         } else if (num1 && (currentOp == MULT || currentOp == DIV)) {
-            num2 = regularPercent(num1);
+            num2 = operation.percent.regular(num1);
             primaryDisplay.textContent = round(num2);
         }
     }
@@ -225,7 +229,10 @@ function addToDisplay(e) {
             } else {
                 primaryDisplay.textContent = input;
             }
-        } else {
+        } else if (calcDone) {
+            primaryDisplay.textContent = input;
+        }
+        else {
             return;
         }
     } else if (input == '.' && display.includes('.')) {
@@ -315,7 +322,6 @@ function round(answer) {
         } 
 
     } else {
-        console.log('y');
         roundedNumber = num;
     }
     return roundedNumber.toString();
