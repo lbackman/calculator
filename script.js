@@ -102,6 +102,7 @@ const ceButton = document.getElementById('ce');
 ceButton.addEventListener('click', clearLast);
 
 const primaryDisplay = document.getElementById('primary');
+// Adding a Secondary display will be a project for another day
 const secondaryDisplay = document.getElementById('secondary');
 
 const numButtons = document.querySelectorAll('.number');
@@ -282,9 +283,6 @@ function calcPercent() {
     }
 }
 
-// Add eventuality for backspacing on calculation output
-// Suggestion: later when defining C and CE buttons,
-// use the function of one of those.
 backSpace.addEventListener('click', function() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
