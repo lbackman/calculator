@@ -204,10 +204,10 @@ function nrssq(e) {
 percentBtn.addEventListener('click', calcPercent);
 
 function calcPercent() {
-    const ADD = operation.add;
-    const SUB = operation.subtract;
-    const MULT = operation.multiply;
-    const DIV = operation.divide;
+    const ADD = operation.add.fn;
+    const SUB = operation.subtract.fn;
+    const MULT = operation.multiply.fn;
+    const DIV = operation.divide.fn;
     if (num2) {
         if (num1 && (currentOp == ADD || currentOp == SUB)) {
             num2 = operation.percent.addSub(num1, num2)
