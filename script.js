@@ -181,78 +181,21 @@ numButtons.forEach(button => {
 
 decimal.addEventListener('click', addToDisplay);
 
-/* COULDN'T GET THIS TO WORK CONSISTENTLY. SO INSTEAD I USED
-SEPARATE FUNCTIONS FOR ALL THESE OPERATIONS */
-// const simpleFnBtns = document.querySelectorAll('.simple');
-// for (const button of simpleFnBtns) {
-//     button.addEventListener('click', e => nrssq(e.target.id));
-// }
+/* These buttons are negate, reciprocal, square and squareroot.
+Since their functions look very similar I have combined them into
+one using their id as function calls. */
+const simpleFnBtns = document.querySelectorAll('.simple');
+simpleFnBtns.forEach(button => {
+    button.addEventListener('click', e => nrssq(e));
+});
 
-// function nrssq(fn) {
-//     console.log("inside: " + fn);
-//     if (num2) {
-//         // console.log(e.target.id);
-//         num2 = operation[fn](num2);
-//         primaryDisplay.textContent = round(num2);
-//     } else {
-//         if (num1) {
-//             // console.log(e.target.id);
-//             num1 = operation[fn](num1);
-//             primaryDisplay.textContent = round(num1);
-//         }
-//     }
-// }
-
-plusMinus.addEventListener('click', negate);
-
-function negate() {
-    if (num2) { 
-        num2 = -num2;
-        primaryDisplay.textContent = round(num2);
-    } else {
-        if (num1) {
-            num1 = -num1;
-            primaryDisplay.textContent = round(num1);
-        }
-    }
-}
-
-reciprocal.addEventListener('click', invert);
-
-function invert() {
+function nrssq(e) {
     if (num2) {
-        num2 = operation.reciprocal(num2);
+        num2 = operation[e.target.id](num2);
         primaryDisplay.textContent = round(num2);
     } else {
         if (num1) {
-            num1 = operation.reciprocal(num1);
-            primaryDisplay.textContent = round(num1);
-        }
-    }
-}
-square.addEventListener('click', toSquare);
-
-function toSquare() {
-    if (num2) {
-        num2 = operation.square(num2);
-        primaryDisplay.textContent = round(num2);
-    } else {
-        if (num1) {
-            num1 = operation.square(num1);
-            primaryDisplay.textContent = round(num1);
-        }
-    }
-}
-
-sqrt.addEventListener('click', toSqrt);
-
-function toSqrt() {
-    if (num2) {
-        num2 = operation.sqrt(num2);
-        primaryDisplay.textContent = round(num2);
-    } else {
-        if (num1) {
-            num1 = operation.sqrt(num1);
+            num1 = operation[e.target.id](num1);
             primaryDisplay.textContent = round(num1);
         }
     }
@@ -290,6 +233,8 @@ backSpace.addEventListener('click', function() {
     } else if (
         num == 'NaN' ||
         num == 'uh oh' ||
+        num == 'Infinity' ||
+        num == '-Infinity' ||
         num.includes('e')) {
         primaryDisplay.textContent = '0';
         currentOp = null;
@@ -376,46 +321,49 @@ function round(answer) {
     if (num.toString().length > 15) {
         const intValue = Math.floor(num).toString().length
         if (intValue >= 15) {
-            if (num < 0) {
-                console.log('exp-minus');
+            if (num <= -1e100) {
+                roundedNumber = num.toExponential(7);
+            }
+            else if (num > -1e100 || num < 0) {
                 roundedNumber = num.toExponential(8);
-            } else {
-                console.log('exp-plus');
+            } else if (num > 0 || num < 1e100) {
                 roundedNumber = num.toExponential(9);
+            } else {
+                roundedNumber = num.toExponential(8);
             }
             
         }
         else if (intValue == 14) {
-            console.log('x=14');
             roundedNumber = Math.floor(num);
 
         } else {
             if (Math.floor(num) == 0) {
-                if (Math.abs(num < 1e-12)) {
+                if (Math.abs(num) <= 1e-100) {
+                    roundedNumber = num.toExponential(8);
+                }
+                else if (Math.abs(num) < 1e-12 || Math.abs(num) > 1e-100) {
                     roundedNumber = num.toExponential(9);
                 } else {
-                    console.log('0.0000...');
                     roundedNumber = num.toFixed(13);
                 }
             // If the number is below 0 and above -1
             } else if (Math.floor(num) == -1) {
-                if (Math.abs(num) < 1e-12) {
+                if (Math.abs(num) <= 1e-100) {
+                    roundedNumber = num.toExponential(7);
+                }
+                if (Math.abs(num) < 1e-12 || Math.abs(num) > 1e-100) {
                     roundedNumber = num.toExponential(8);
                 } else {
-                    console.log('-0.0000...');
                     roundedNumber = num.toFixed(12);
                 }
             }
              else {
                 for (let i = 1; i < 14; i++) {
                     if (i == intValue) {
-                        console.log('1<x<14');
-                        console.log(i);
                         roundedNumber = num.toFixed(14-i);
                     }
                 }
             }
-            
         } 
 
     } else {
