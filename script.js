@@ -37,6 +37,59 @@ const operation = {
         regular : (num) => num / 100,
     },
 };
+const clearMem = document.getElementById('clear');
+const recallMem = document.getElementById('recall');
+const memButtons = document.querySelectorAll('.mem');
+for (const button of memButtons) {
+    button.addEventListener('click', function(e) {
+        const memId = e.target.id;
+        switch (memId) {
+            case ('clear'):
+                memory = null;
+                clearMem.setAttribute('disabled', '');
+                recallMem.setAttribute('disabled', '');
+                return;
+            case ('recall'):
+                num2 = memory;
+                primaryDisplay.textContent = num2;
+                return;
+            case ('add-to'):
+                if (num1 || num2) {
+                    if (num2 && memory) memory += +num2;
+                    if (num2 && !memory) memory = num2;
+                    if (num1 && !num2) memory += +num1;
+                    clearMem.removeAttribute('disabled');
+                    recallMem.removeAttribute('disabled');
+                } else {
+                    return;
+                }
+                return;
+            case ('remove'):
+                if (num1 || num2) {
+                    if (num2 && memory) memory -= num2;
+                    if (num2 && !memory) memory = num2;
+                    if (num1 && !num2) memory -= num1;
+                    clearMem.removeAttribute('disabled');
+                    recallMem.removeAttribute('disabled');
+                } else {
+                    return;
+                }
+                return;
+            case ('store'):
+                if (num1 || num2) {
+                    if (num2) memory = num2;
+                    if (num1 && !num2) memory = num1;
+                    clearMem.removeAttribute('disabled');
+                    recallMem.removeAttribute('disabled');
+                } else {
+                    return;
+                }
+                return;
+            default:
+                return;
+        }
+    });
+}
 
 const cButton = document.getElementById('c');
 cButton.addEventListener('click', clear);
@@ -372,6 +425,8 @@ function round(answer) {
 function clear() {
     if (cClicked) {
         memory = null;
+        clearMem.setAttribute('disabled', '');
+        recallMem.setAttribute('disabled', '');
         cClicked = false;
     }
     if (memory) cClicked = true;
