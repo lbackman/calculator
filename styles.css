@@ -107,6 +107,9 @@ button:active {
     font-size: 12px;
     background-color: #fff;
 }
+.mem.instore {
+    border: 1px solid black;
+}
 
 .mem:hover {
     background-color: rgb(236, 242, 247);

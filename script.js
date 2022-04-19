@@ -48,6 +48,7 @@ for (const button of memButtons) {
                 memory = null;
                 clearMem.setAttribute('disabled', '');
                 recallMem.setAttribute('disabled', '');
+                recallMem.classList.remove('instore');
                 return;
             case ('recall'):
                 num2 = memory;
@@ -60,6 +61,7 @@ for (const button of memButtons) {
                     if (num1 && !num2) memory += +num1;
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
+                    recallMem.classList.add('instore');
                 } else {
                     return;
                 }
@@ -71,6 +73,7 @@ for (const button of memButtons) {
                     if (num1 && !num2) memory -= num1;
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
+                    recallMem.classList.add('instore');
                 } else {
                     return;
                 }
@@ -81,6 +84,7 @@ for (const button of memButtons) {
                     if (num1 && !num2) memory = num1;
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
+                    recallMem.classList.add('instore');
                 } else {
                     return;
                 }
@@ -427,6 +431,7 @@ function clear() {
         memory = null;
         clearMem.setAttribute('disabled', '');
         recallMem.setAttribute('disabled', '');
+        recallMem.classList.remove('instore');
         cClicked = false;
     }
     if (memory) cClicked = true;
