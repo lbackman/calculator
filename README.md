@@ -1,7 +1,7 @@
 # calculator
 Classic digital calculator app
 
-This calculator will have the properties of a simple handheld calculator:
+This calculator has the most common properties of a handheld calculator:
 
 - Addition
 - Subtraction
@@ -10,5 +10,9 @@ This calculator will have the properties of a simple handheld calculator:
 - Percentages
 - Square & squareroot
 - Inverse
-- Factorial
 - Storing values in memory
+
+Planned for future release:
+
+ - Keyboard support
+ - Secondary display that shows the calculation steps
