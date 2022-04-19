@@ -7,22 +7,36 @@ let repeatOp;
 let calcDone = false;
 let cClicked = false;
 let ceClicked = false;
-const operation = {};
-operation.add = (num1, num2) => ((+num1) + (+num2));
-operation.subtract = (num1, num2) => (num1 - num2);
-operation.multiply = (num1, num2) => (num1 * num2);
-operation.divide = (num1, num2) => (num2 == 0) ? 
-    "uh oh" : (num1 / num2);
-
-operation.negate = (num) => -num;
-operation.reciprocal = (num) => num == 0 ? 'uh oh' : (1 / num);
-operation.square = (num) => (num * num);
-operation.sqrt = (num) => num >= 0 ? (Math.sqrt(num)) : 'uh oh';
-
-operation.percent = {};
-// addSub stands for 'add or subtract'
-operation.percent.addSub = (num1, num2) => (num1 * num2) / 100;
-operation.percent.regular = (num) => num / 100;
+const operation = {
+    add : {
+        fn : (num1, num2) => ((+num1) + (+num2)),
+        symbol : '+',
+    },
+    subtract : {
+        fn : (num1, num2) => (num1 - num2),
+        symbol : '-',
+    },
+    multiply : {
+        fn : (num1, num2) => (num1 * num2),
+        symbol : '&times;',
+    },
+    divide : {
+        fn : (num1, num2) => (num2 == 0) ? 
+        "uh oh" : (num1 / num2),
+        symbol : '/',
+    },
+    
+    negate : (num) => -num,
+    reciprocal : (num) => num == 0 ? 'uh oh' : (1 / num),
+    square : (num) => (num * num),
+    sqrt : (num) => num >= 0 ? (Math.sqrt(num)) : 'uh oh',
+    
+    percent : {
+        // addSub stands for 'add or subtract'
+        addSub : (num1, num2) => (num1 * num2) / 100,
+        regular : (num) => num / 100,
+    },
+};
 
 const cButton = document.getElementById('c');
 cButton.addEventListener('click', clear);
@@ -46,6 +60,7 @@ const percentBtn = document.getElementById('percent');
 Uses object so a string can be passed as a function, in this
 case, e.target.id, which is add, subtract, multiply or divide.
 */
+// pmmd : plus, minus, multiply, divide
 const pmmd = document.querySelectorAll('.calc.operator');
 pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
@@ -55,21 +70,21 @@ pmmd.forEach(button => {
             tempNum = num2;
             num2 = null;
             repeatOp = currentOp;
-            currentOp = operation[e.target.id];
+            currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
         } else if (!num1 && num2) {
             num1 = num2;
             num2 = null;
-            currentOp = operation[e.target.id];
+            currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
         } else if (num1 && !num2) {
-            currentOp = operation[e.target.id]
+            currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
         } else if (!num1 && !num2) {
-            currentOp = operation[e.target.id];
+            currentOp = operation[e.target.id]['fn'];
             e.target.classList.add('selected');
             num1 = '0';
         }  
@@ -107,6 +122,28 @@ numButtons.forEach(button => {
 });
 
 decimal.addEventListener('click', addToDisplay);
+
+/* COULDN'T GET THIS TO WORK CONSISTENTLY. SO INSTEAD I USED
+SEPARATE FUNCTIONS FOR ALL THESE OPERATIONS */
+// const simpleFnBtns = document.querySelectorAll('.simple');
+// for (const button of simpleFnBtns) {
+//     button.addEventListener('click', e => nrssq(e.target.id));
+// }
+
+// function nrssq(fn) {
+//     console.log("inside: " + fn);
+//     if (num2) {
+//         // console.log(e.target.id);
+//         num2 = operation[fn](num2);
+//         primaryDisplay.textContent = round(num2);
+//     } else {
+//         if (num1) {
+//             // console.log(e.target.id);
+//             num1 = operation[fn](num1);
+//             primaryDisplay.textContent = round(num1);
+//         }
+//     }
+// }
 
 plusMinus.addEventListener('click', negate);
 
