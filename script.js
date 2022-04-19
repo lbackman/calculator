@@ -14,11 +14,13 @@ operation.multiply = (num1, num2) => (num1 * num2);
 operation.divide = (num1, num2) => (num2 == 0) ? 
     "uh oh" : (num1 / num2);
 
+operation.negate = (num) => -num;
+operation.reciprocal = (num) => num == 0 ? 'uh oh' : (1 / num);
 operation.square = (num) => (num * num);
 operation.sqrt = (num) => num >= 0 ? (Math.sqrt(num)) : 'uh oh';
-operation.reciprocal = (num) => num == 0 ? 'uh oh' : (1 / num);
 
 operation.percent = {};
+// addSub stands for 'add or subtract'
 operation.percent.addSub = (num1, num2) => (num1 * num2) / 100;
 operation.percent.regular = (num) => num / 100;
 
@@ -28,26 +30,13 @@ cButton.addEventListener('click', clear);
 const ceButton = document.getElementById('ce');
 ceButton.addEventListener('click', clearLast);
 
-// Percentage functions
-
-// Returns the 2nd number's percentage of the first
-// E.g. percentAdd(10, 20) = 20% of 10 = 2
-// This value will be stored in the second operand
-// const percentAddSub = (num1, num2) => {
-//     return (num1 * num2) / 100;
-// }
-
-// const regularPercent = (num) => num / 100;
-// operate takes 1 or 2 numbers as arguments
-// const operate = (op, num1, num2) => op(num1, num2);
-
 const primaryDisplay = document.getElementById('primary');
 const secondaryDisplay = document.getElementById('secondary');
 
 const numButtons = document.querySelectorAll('.number');
 const decimal = document.getElementById('decimal');
 const backSpace = document.getElementById('backspace');
-const plusMinus = document.getElementById('plus-minus');
+const plusMinus = document.getElementById('negate');
 const reciprocal = document.getElementById('reciprocal');
 const square = document.getElementById('square');
 const sqrt = document.getElementById('sqrt');
@@ -97,14 +86,10 @@ equal.addEventListener('click', function() {
         tempNum = num2;
         num2 = currentOp(num1, num2);
         primaryDisplay.textContent= round(num2);
-        // tempNum = num2;
         num1 = null;
         repeatOp = currentOp;
         currentOp = null;
         calcDone = true;
-        // console.log('num1: ' + num1);
-        // console.log('num2: ' + num2);
-        // console.log('op: ' + currentOp);
     } else if (repeatOp) {
         num1 = num2;
         num2 = tempNum;
@@ -129,6 +114,11 @@ function negate() {
     if (num2) { 
         num2 = -num2;
         primaryDisplay.textContent = round(num2);
+    } else {
+        if (num1) {
+            num1 = -num1;
+            primaryDisplay.textContent = round(num1);
+        }
     }
 }
 
@@ -138,6 +128,11 @@ function invert() {
     if (num2) {
         num2 = operation.reciprocal(num2);
         primaryDisplay.textContent = round(num2);
+    } else {
+        if (num1) {
+            num1 = operation.reciprocal(num1);
+            primaryDisplay.textContent = round(num1);
+        }
     }
 }
 square.addEventListener('click', toSquare);
@@ -146,6 +141,11 @@ function toSquare() {
     if (num2) {
         num2 = operation.square(num2);
         primaryDisplay.textContent = round(num2);
+    } else {
+        if (num1) {
+            num1 = operation.square(num1);
+            primaryDisplay.textContent = round(num1);
+        }
     }
 }
 
@@ -155,6 +155,11 @@ function toSqrt() {
     if (num2) {
         num2 = operation.sqrt(num2);
         primaryDisplay.textContent = round(num2);
+    } else {
+        if (num1) {
+            num1 = operation.sqrt(num1);
+            primaryDisplay.textContent = round(num1);
+        }
     }
 }
 
