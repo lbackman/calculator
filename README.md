@@ -11,8 +11,8 @@ This calculator has the most common properties of a handheld calculator:
 - Square & squareroot
 - Inverse
 - Storing values in memory
+- Secondary display that shows the calculation steps
 
 Planned for future release:
 
  - Keyboard support
- - Secondary display that shows the calculation steps
