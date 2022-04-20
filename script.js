@@ -291,7 +291,11 @@ function addToDisplay(e) {
                 primaryDisplay.textContent = input;
             }
         } else if (calcDone) {
-            primaryDisplay.textContent = input;
+            if (num1) {
+                return;
+            } else {
+                primaryDisplay.textContent = input;
+            }
         }
         else {
             return;
