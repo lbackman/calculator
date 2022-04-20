@@ -175,7 +175,9 @@ pmmd.forEach(button => {
 });
 
 const equal = document.getElementById('equal');
-equal.addEventListener('click', function() {
+equal.addEventListener('click', equals);
+
+function equals() {
     if (num1 && num2) {
         pmmd.forEach(el => el.classList.remove('selected'));
         tempNum1 = num2;
@@ -213,29 +215,35 @@ equal.addEventListener('click', function() {
     } else {
         return;
     }
-});
+}
 
 numButtons.forEach(button => {
-    button.addEventListener('click', addToDisplay);
+    button.addEventListener('click', (e) => {
+        addToDisplay(e.target.textContent);
+    });
 });
 
-decimal.addEventListener('click', addToDisplay);
+decimal.addEventListener('click', (e) => {
+    addToDisplay(e.target.textContent)
+});
 
 /* These buttons are negate, reciprocal, square and squareroot.
 Since their functions look very similar I have combined them into
 one using their id as function calls. */
 const simpleFnBtns = document.querySelectorAll('.simple');
 simpleFnBtns.forEach(button => {
-    button.addEventListener('click', e => nrssq(e));
+    button.addEventListener('click', e => {
+        nrssq(e.target.id);
+    });
 });
 
-function nrssq(e) {
+function nrssq(fn) {
     if (num2) {
-        num2 = operation[e.target.id](num2);
+        num2 = operation[fn](num2);
         primaryDisplay.textContent = round(num2);
     } else {
         if (num1) {
-            num1 = operation[e.target.id](num1);
+            num1 = operation[fn](num1);
             primaryDisplay.textContent = round(num1);
         }
     }
@@ -266,7 +274,9 @@ function calcPercent() {
     }
 }
 
-backSpace.addEventListener('click', function() {
+backSpace.addEventListener('click', remove);
+
+function remove() {
     const num = primaryDisplay.textContent
     if (num.length == 1) {
         primaryDisplay.textContent = '0';
@@ -289,10 +299,10 @@ backSpace.addEventListener('click', function() {
         }
     }
     num2 = primaryDisplay.textContent;
-});
+}
 
-function addToDisplay(e) {
-    const input = e.target.textContent;
+function addToDisplay(input) {
+    // const input = e.target.textContent;
     let display = primaryDisplay.textContent;
     if (display =='NaN' || display == 'uh oh') {
         repeatOp = null;
@@ -445,7 +455,7 @@ function clear() {
     secFour.textContent = '';
 }
 
-function clearLast () {
+function clearLast() {
     if (ceClicked) {
         clear();
         ceClicked = false;
@@ -468,3 +478,39 @@ function clearLast () {
         }
     }
 }
+
+// Keyboard input
+
+document.addEventListener('keydown', (e) => {
+    const name = e.key;
+    if (name === 'Backspace') remove();
+    if (name >= '0' && name <= '9') addToDisplay(name);
+    if (name === '.') addToDisplay(name);
+    if (name === 'Enter' || name === '=') {
+        e.preventDefault();
+        equals();
+    }
+    if (name === 'Escape') clear();
+    if (name ==='z') clearLast();
+    if (name === '+') {
+        e.preventDefault();
+        document.getElementById('add').click();
+    }
+    if (name === '-') {
+        e.preventDefault();
+        document.getElementById('subtract').click();
+    }
+    if (name === '*') {
+        e.preventDefault();
+        document.getElementById('multiply').click();
+    }
+    if (name === '/') {
+        e.preventDefault();
+        document.getElementById('divide').click();
+    }
+    if (name === '%') calcPercent();
+    if (name === 's') nrssq('square');
+    if (name === 'q') nrssq('sqrt');
+    if (name === 'r') nrssq('reciprocal');
+    if (name === 'n') nrssq('negate');
+}, false);
