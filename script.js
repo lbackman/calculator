@@ -189,7 +189,6 @@ equal.addEventListener('click', function() {
         currentOp = null;
         calcDone = true;
         tempSymb2 = secTwo.textContent;
-        console.log('here');
     } else if (repeatOp) {
         if (!num2) {
             if (calcDone) secTwo.textContent = tempSymb2;
@@ -197,12 +196,10 @@ equal.addEventListener('click', function() {
             num1 = tempNum2;
             num2 = tempNum1;
             pmmd.forEach(el => el.classList.remove('selected'));
-            console.log('here');
             tempSymb2 = secTwo.textContent;
         } else {
            num1 = num2;
            secTwo.textContent = tempSymb2;
-           console.log('here');
         }
         secOne.textContent = num1;
         
