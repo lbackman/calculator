@@ -1,6 +1,8 @@
 let num1;
 let num2;
-let tempNum;
+let tempNum1;
+let tempNum2;
+let tempSymb;
 let memory;
 let currentOp;
 let repeatOp;
@@ -127,11 +129,12 @@ pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
         const symbol = operation[e.target.id]['symbol'];
         if (num1 && num2) {
+            tempNum2 = num1;
             num1 = currentOp(num1, num2);
             primaryDisplay.textContent = round(num1);
             secOne.textContent = primaryDisplay.textContent;
             secTwo.textContent = symbol;
-            tempNum = num2;
+            tempNum1 = num2;
             secThree.textContent = '';
             secFour.textContent = '';
             num2 = null;
@@ -142,6 +145,7 @@ pmmd.forEach(button => {
         } else if (!num1 && num2) {
             num1 = num2;
             num2 = null;
+            tempSymb = symbol;
             currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
@@ -172,9 +176,10 @@ const equal = document.getElementById('equal');
 equal.addEventListener('click', function() {
     if (num1 && num2) {
         pmmd.forEach(el => el.classList.remove('selected'));
-        tempNum = num2;
+        tempNum1 = num2;
+        tempNum2 = num1;
         num2 = currentOp(num1, num2);
-        secThree.textContent = tempNum;
+        secThree.textContent = tempNum1;
         secFour.textContent = '=';
         primaryDisplay.textContent= round(num2);
         num1 = null;
@@ -182,11 +187,18 @@ equal.addEventListener('click', function() {
         currentOp = null;
         calcDone = true;
     } else if (repeatOp) {
-        num1 = num2;
+        if (!num2) {
+            num1 = tempNum2;
+            num2 = tempNum1;
+            pmmd.forEach(el => el.classList.remove('selected'));
+        } else {
+           num1 = num2; 
+        }
         secOne.textContent = num1;
-        secThree.textContent = tempNum;
+        secTwo.textContent = tempSymb;
+        secThree.textContent = tempNum1;
         secFour.textContent = '=';
-        num2 = tempNum;
+        num2 = tempNum1;
         num2 = repeatOp(num1, num2);
         primaryDisplay.textContent = round(num2);
         num1 = null;
@@ -417,7 +429,7 @@ function clear() {
     if (memory) cClicked = true;
     num1 = null;
     num2 = null;
-    tempNum = null;
+    tempNum1 = null;
     currentOp = null;
     repeatOp = null;
     calcDone = false;
