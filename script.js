@@ -2,7 +2,8 @@ let num1;
 let num2;
 let tempNum1;
 let tempNum2;
-let tempSymb;
+let tempSymb1;
+let tempSymb2;
 let memory;
 let currentOp;
 let repeatOp;
@@ -145,7 +146,7 @@ pmmd.forEach(button => {
         } else if (!num1 && num2) {
             num1 = num2;
             num2 = null;
-            tempSymb = symbol;
+            tempSymb1 = symbol;
             currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
@@ -155,6 +156,7 @@ pmmd.forEach(button => {
             secThree.textContent = '';
             secFour.textContent = '';
         } else if (num1 && !num2) {
+            // if (!calcDone) tempSymb2 = secTwo.textContent;
             currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
@@ -186,16 +188,24 @@ equal.addEventListener('click', function() {
         repeatOp = currentOp;
         currentOp = null;
         calcDone = true;
+        tempSymb2 = secTwo.textContent;
+        console.log('here');
     } else if (repeatOp) {
         if (!num2) {
+            if (calcDone) secTwo.textContent = tempSymb2;
+            if (!calcDone) secTwo.textContent = tempSymb1;
             num1 = tempNum2;
             num2 = tempNum1;
             pmmd.forEach(el => el.classList.remove('selected'));
+            console.log('here');
+            tempSymb2 = secTwo.textContent;
         } else {
-           num1 = num2; 
+           num1 = num2;
+           secTwo.textContent = tempSymb2;
+           console.log('here');
         }
         secOne.textContent = num1;
-        secTwo.textContent = tempSymb;
+        
         secThree.textContent = tempNum1;
         secFour.textContent = '=';
         num2 = tempNum1;
@@ -226,12 +236,10 @@ function nrssq(e) {
     if (num2) {
         num2 = operation[e.target.id](num2);
         primaryDisplay.textContent = round(num2);
-        console.log('here');
     } else {
         if (num1) {
             num1 = operation[e.target.id](num1);
             primaryDisplay.textContent = round(num1);
-            console.log('here');
         }
     }
 }
@@ -342,7 +350,6 @@ function addToDisplay(e) {
         primaryDisplay.textContent = input;
         num1 = null;
         calcDone = false;
-        console.log('yes');
     } else if (!num1 && !num2) {
         pmmd.forEach(el => el.classList.remove('selected'));
         currentOp = null;
@@ -383,14 +390,11 @@ function round(answer) {
             if (Math.floor(num) == 0) {
                 if (Math.abs(num) <= 1e-100) {
                     roundedNumber = num.toExponential(8);
-                    console.log('yup');
                 }
                 else if (Math.abs(num) < 1e-12 && Math.abs(num) > 1e-100) {
                     roundedNumber = num.toExponential(9);
-                    console.log('yup');
                 } else {
                     roundedNumber = num.toFixed(13);
-                    console.log('yup');
                 }
             // If the number is below 0 and above -1
             } else if (Math.floor(num) == -1) {
@@ -430,6 +434,9 @@ function clear() {
     num1 = null;
     num2 = null;
     tempNum1 = null;
+    tempNum2 = null;
+    tempSymb1 = null;
+    tempSymb2 = null;
     currentOp = null;
     repeatOp = null;
     calcDone = false;
