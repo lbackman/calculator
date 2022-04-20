@@ -80,7 +80,15 @@ body {
 }
 
 #secondary {
+    display: flex;
     flex: 1;
+    justify-content: flex-end;
+    margin-top: 8px;
+    font-size: clamp(0.87rem, -0.202rem + 1.99vw, 1.56rem);
+}
+
+#secondary div {
+    padding-left: 5px;
 }
 
 button {

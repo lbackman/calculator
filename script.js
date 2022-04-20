@@ -18,7 +18,7 @@ const operation = {
     },
     multiply : {
         fn : (num1, num2) => (num1 * num2),
-        symbol : '&times;',
+        symbol : 'x',
     },
     divide : {
         fn : (num1, num2) => (num2 == 0) ? 
@@ -104,6 +104,10 @@ ceButton.addEventListener('click', clearLast);
 const primaryDisplay = document.getElementById('primary');
 // Adding a Secondary display will be a project for another day
 const secondaryDisplay = document.getElementById('secondary');
+const secOne = document.getElementById('sec1');
+const secTwo = document.getElementById('sec2');
+const secThree = document.getElementById('sec3');
+const secFour = document.getElementById('sec4');
 
 const numButtons = document.querySelectorAll('.number');
 const decimal = document.getElementById('decimal');
@@ -122,10 +126,13 @@ case, e.target.id, which is add, subtract, multiply or divide.
 const pmmd = document.querySelectorAll('.calc.operator');
 pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
+        const symbol = operation[e.target.id]['symbol'];
         if (num1 && num2) {
             num1 = currentOp(num1, num2);
             primaryDisplay.textContent = round(num1);
             tempNum = num2;
+            secThree.textContent = tempNum;
+            secFour.textContent = '=';
             num2 = null;
             repeatOp = currentOp;
             currentOp = operation[e.target.id]['fn'];
@@ -137,14 +144,19 @@ pmmd.forEach(button => {
             currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
+            secOne.textContent = round(num1);
+            secTwo.textContent = symbol;
         } else if (num1 && !num2) {
             currentOp = operation[e.target.id]['fn'];
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
+            secTwo.textContent = symbol;
         } else if (!num1 && !num2) {
             currentOp = operation[e.target.id]['fn'];
             e.target.classList.add('selected');
             num1 = '0';
+            secOne.textContent = round(num1);
+            secTwo.textContent = symbol;
         }  
         else {
             return;
@@ -158,6 +170,8 @@ equal.addEventListener('click', function() {
         pmmd.forEach(el => el.classList.remove('selected'));
         tempNum = num2;
         num2 = currentOp(num1, num2);
+        secThree.textContent = tempNum;
+        secFour.textContent = '=';
         primaryDisplay.textContent= round(num2);
         num1 = null;
         repeatOp = currentOp;
@@ -165,6 +179,9 @@ equal.addEventListener('click', function() {
         calcDone = true;
     } else if (repeatOp) {
         num1 = num2;
+        secOne.textContent = num1;
+        secThree.textContent = tempNum;
+        secFour.textContent = '=';
         num2 = tempNum;
         num2 = repeatOp(num1, num2);
         primaryDisplay.textContent = round(num2);
@@ -295,6 +312,10 @@ function addToDisplay(e) {
             primaryDisplay.textContent = input;
         }
     } else if (calcDone && !num1 && num2) {
+        secOne.textContent = '';
+        secTwo.textContent = '';
+        secThree.textContent = '';
+        secFour.textContent = '';
         repeatOp = null;
         primaryDisplay.textContent = input;
         num1 = null;
@@ -389,6 +410,10 @@ function clear() {
     calcDone = false;
     pmmd.forEach(el => el.classList.remove('selected'));
     primaryDisplay.textContent = '0';
+    secOne.textContent = '';
+    secTwo.textContent = '';
+    secThree.textContent = '';
+    secFour.textContent = '';
 }
 
 function clearLast () {
