@@ -210,10 +210,12 @@ function nrssq(e) {
     if (num2) {
         num2 = operation[e.target.id](num2);
         primaryDisplay.textContent = round(num2);
+        console.log('here');
     } else {
         if (num1) {
             num1 = operation[e.target.id](num1);
             primaryDisplay.textContent = round(num1);
+            console.log('here');
         }
     }
 }
@@ -345,9 +347,9 @@ function round(answer) {
             if (num <= -1e100) {
                 roundedNumber = num.toExponential(7);
             }
-            else if (num > -1e100 || num < 0) {
+            else if (num > -1e100 && num < 0) {
                 roundedNumber = num.toExponential(8);
-            } else if (num > 0 || num < 1e100) {
+            } else if (num > 0 && num < 1e100) {
                 roundedNumber = num.toExponential(9);
             } else {
                 roundedNumber = num.toExponential(8);
@@ -361,18 +363,21 @@ function round(answer) {
             if (Math.floor(num) == 0) {
                 if (Math.abs(num) <= 1e-100) {
                     roundedNumber = num.toExponential(8);
+                    console.log('yup');
                 }
-                else if (Math.abs(num) < 1e-12 || Math.abs(num) > 1e-100) {
+                else if (Math.abs(num) < 1e-12 && Math.abs(num) > 1e-100) {
                     roundedNumber = num.toExponential(9);
+                    console.log('yup');
                 } else {
                     roundedNumber = num.toFixed(13);
+                    console.log('yup');
                 }
             // If the number is below 0 and above -1
             } else if (Math.floor(num) == -1) {
                 if (Math.abs(num) <= 1e-100) {
                     roundedNumber = num.toExponential(7);
                 }
-                if (Math.abs(num) < 1e-12 || Math.abs(num) > 1e-100) {
+                if (Math.abs(num) < 1e-12 && Math.abs(num) > 1e-100) {
                     roundedNumber = num.toExponential(8);
                 } else {
                     roundedNumber = num.toFixed(12);
