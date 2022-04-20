@@ -102,7 +102,6 @@ const ceButton = document.getElementById('ce');
 ceButton.addEventListener('click', clearLast);
 
 const primaryDisplay = document.getElementById('primary');
-// Adding a Secondary display will be a project for another day
 const secondaryDisplay = document.getElementById('secondary');
 const secOne = document.getElementById('sec1');
 const secTwo = document.getElementById('sec2');
