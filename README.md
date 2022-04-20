@@ -12,7 +12,16 @@ This calculator has the most common properties of a handheld calculator:
 - Inverse
 - Storing values in memory
 - Secondary display that shows the calculation steps
+- Keyboard support
 
-Planned for future release:
+Keyboard legend:
 
- - Keyboard support
+numbers 0-9; decimal . ; operations + - * / %
+square: s
+sqrt: q
+reciprocal:r
+negate: n
+clear: esc
+clear last: z
+equal: enter or =
+delete: backspace
