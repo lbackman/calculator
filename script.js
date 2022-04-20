@@ -126,12 +126,15 @@ const pmmd = document.querySelectorAll('.calc.operator');
 pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
         const symbol = operation[e.target.id]['symbol'];
+        const currentSym = secTwo.textContent;
         if (num1 && num2) {
             num1 = currentOp(num1, num2);
             primaryDisplay.textContent = round(num1);
+            secOne.textContent = primaryDisplay.textContent;
+            secTwo.textContent = symbol;
             tempNum = num2;
-            secThree.textContent = tempNum;
-            secFour.textContent = '=';
+            secThree.textContent = '';
+            secFour.textContent = '';
             num2 = null;
             repeatOp = currentOp;
             currentOp = operation[e.target.id]['fn'];
@@ -144,6 +147,7 @@ pmmd.forEach(button => {
             pmmd.forEach(el => el.classList.remove('selected'));
             e.target.classList.add('selected');
             secOne.textContent = round(num1);
+            secTwo.textContent = '';
             secTwo.textContent = symbol;
         } else if (num1 && !num2) {
             currentOp = operation[e.target.id]['fn'];
