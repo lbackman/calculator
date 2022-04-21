@@ -45,7 +45,10 @@ const recallMem = document.getElementById('recall');
 const memButtons = document.querySelectorAll('.mem');
 for (const button of memButtons) {
     button.addEventListener('click', function(e) {
+        const value = primaryDisplay.textContent;
         const memId = e.target.id;
+        cClicked = false;
+        ceClicked = false;
         switch (memId) {
             case ('clear'):
                 memory = null;
@@ -58,10 +61,21 @@ for (const button of memButtons) {
                 primaryDisplay.textContent = num2;
                 return;
             case ('add-to'):
+                if (value == 'Infinity' ||
+                    value == '-Infinity' ||
+                    value == 'uh oh' ||
+                    value == 'NaN') return;
+                
                 if (num1 || num2) {
                     if (num2 && memory) memory += +num2;
                     if (num2 && !memory) memory = num2;
-                    if (num1 && !num2) memory += +num1;
+                    if (!num2) memory += +num1;
+                    if (!num1 && calcDone) {
+                        secOne.textContent = '';
+                        secTwo.textContent = '';
+                        secThree.textContent = '';
+                        secFour.textContent = '';  
+                    }
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
                     recallMem.classList.add('instore');
@@ -70,10 +84,20 @@ for (const button of memButtons) {
                 }
                 return;
             case ('remove'):
+                if (value == 'Infinity' ||
+                    value == '-Infinity' ||
+                    value == 'uh oh' ||
+                    value == 'NaN') return;
                 if (num1 || num2) {
                     if (num2 && memory) memory -= num2;
                     if (num2 && !memory) memory = num2;
-                    if (num1 && !num2) memory -= num1;
+                    if (!num2) memory -= num1;
+                    if (!num1 && calcDone) {
+                        secOne.textContent = '';
+                        secTwo.textContent = '';
+                        secThree.textContent = '';
+                        secFour.textContent = '';  
+                    }
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
                     recallMem.classList.add('instore');
@@ -82,9 +106,19 @@ for (const button of memButtons) {
                 }
                 return;
             case ('store'):
+                if (value == 'Infinity' ||
+                    value == '-Infinity' ||
+                    value == 'uh oh' ||
+                    value == 'NaN') return;
                 if (num1 || num2) {
                     if (num2) memory = num2;
-                    if (num1 && !num2) memory = num1;
+                    if (!num2) memory = num1;
+                    if (!num1 && calcDone) {
+                        secOne.textContent = '';
+                        secTwo.textContent = '';
+                        secThree.textContent = '';
+                        secFour.textContent = '';  
+                    }
                     clearMem.removeAttribute('disabled');
                     recallMem.removeAttribute('disabled');
                     recallMem.classList.add('instore');
@@ -128,6 +162,8 @@ case, e.target.id, which is add, subtract, multiply or divide.
 const pmmd = document.querySelectorAll('.calc.operator');
 pmmd.forEach(button => {
     button.addEventListener('click', function(e) {
+        cClicked = false;
+        ceClicked = false;
         const symbol = operation[e.target.id]['symbol'];
         if (num1 && num2) {
             tempNum2 = num1;
@@ -178,6 +214,8 @@ const equal = document.getElementById('equal');
 equal.addEventListener('click', equals);
 
 function equals() {
+    cClicked = false;
+    ceClicked = false;
     if (num1 && num2) {
         pmmd.forEach(el => el.classList.remove('selected'));
         tempNum1 = num2;
@@ -203,7 +241,7 @@ function equals() {
            num1 = num2;
            secTwo.textContent = tempSymb2;
         }
-        secOne.textContent = num1;
+        secOne.textContent = round(num1);
         
         secThree.textContent = tempNum1;
         secFour.textContent = '=';
@@ -219,11 +257,15 @@ function equals() {
 
 numButtons.forEach(button => {
     button.addEventListener('click', (e) => {
+        cClicked = false;
+        ceClicked = false;
         addToDisplay(e.target.textContent);
     });
 });
 
 decimal.addEventListener('click', (e) => {
+    cClicked = false;
+    ceClicked = false;
     addToDisplay(e.target.textContent)
 });
 
@@ -233,18 +275,27 @@ one using their id as function calls. */
 const simpleFnBtns = document.querySelectorAll('.simple');
 simpleFnBtns.forEach(button => {
     button.addEventListener('click', e => {
+        cClicked = false;
+        ceClicked = false;
         nrssq(e.target.id);
     });
 });
 
 function nrssq(fn) {
     if (num2) {
+        if (calcDone) {
+            secOne.textContent = '';
+            secTwo.textContent = '';
+            secThree.textContent = '';
+            secFour.textContent = '';
+        }
         num2 = operation[fn](num2);
         primaryDisplay.textContent = round(num2);
     } else {
         if (num1) {
             num1 = operation[fn](num1);
             primaryDisplay.textContent = round(num1);
+            secOne.textContent = primaryDisplay.textContent;
         }
     }
 }
@@ -252,6 +303,8 @@ function nrssq(fn) {
 percentBtn.addEventListener('click', calcPercent);
 
 function calcPercent() {
+    cClicked = false;
+    ceClicked = false;
     const ADD = operation.add.fn;
     const SUB = operation.subtract.fn;
     const MULT = operation.multiply.fn;
@@ -277,25 +330,50 @@ function calcPercent() {
 backSpace.addEventListener('click', remove);
 
 function remove() {
+    cClicked = false;
+    ceClicked = false;
     const num = primaryDisplay.textContent
     if (num.length == 1) {
+        if (num2 && !num1 && calcDone) {
+            primaryDisplay.textContent = '0';
+            secOne.textContent = '';
+            secTwo.textContent = '';
+            secThree.textContent = '';
+            secFour.textContent = '';
+        }
         primaryDisplay.textContent = '0';
+        console.log('here');
     } else if (
         num == 'NaN' ||
         num == 'uh oh' ||
         num == 'Infinity' ||
         num == '-Infinity' ||
         num.includes('e')) {
-        primaryDisplay.textContent = '0';
-        currentOp = null;
-        pmmd.forEach(el => el.classList.remove('selected'));
+            primaryDisplay.textContent = '0';
+            secOne.textContent = '';
+            secTwo.textContent = '';
+            secThree.textContent = '';
+            secFour.textContent = '';
+            currentOp = null;
+            pmmd.forEach(el => el.classList.remove('selected'));
+            console.log('here');
     } 
     else {
         const newStr = num.slice(0, -1);
+        if (num2 && !num1 && calcDone) {
+            secOne.textContent = '';
+            secTwo.textContent = '';
+            secThree.textContent = '';
+            secFour.textContent = '';
+            repeatOp = null;
+            console.log('here');
+        }
         if (newStr.charAt(newStr.length - 1) == '.') {
             primaryDisplay.textContent = newStr.slice(0, -1);
+            console.log('here');
         } else {
             primaryDisplay.textContent = newStr;
+            console.log('here');
         }
     }
     num2 = primaryDisplay.textContent;
@@ -304,7 +382,11 @@ function remove() {
 function addToDisplay(input) {
     // const input = e.target.textContent;
     let display = primaryDisplay.textContent;
-    if (display =='NaN' || display == 'uh oh') {
+    if (display =='NaN' ||
+        display == 'uh oh' ||
+        display == 'Infinity' ||
+        display == '-Infinity' ||
+        display.includes('e')) {
         repeatOp = null;
         calcDone = false;
         if (input == '.'){
